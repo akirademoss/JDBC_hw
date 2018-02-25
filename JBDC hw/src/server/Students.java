@@ -32,26 +32,18 @@ public class Students {
             System.out.println("VendorError: " + e.getErrorCode());
         }
     }
-	
-	
-	public static void main(String args[]){
-		Students project2 = new Students();
-		project2.viewDB();
-		Statement statement1;
-		Statement statement2;
-		ResultSet rs = null;
+    
+    private void getStudentInfo(){
+    	Statement stmnt;
+    	ResultSet rs = null;
 		try {
-			statement1 =  con.createStatement();
-			statement2 = con.createStatement();
-			rs = statement1.executeQuery("select * from Student s");
+			stmnt =  con.createStatement();
+			rs = stmnt.executeQuery("select e.Student, e.CourseCode from Enrollment e");
 		
 			System.out.println(rs); // testing only, remove when done with project
-			int oldCredits = 0;
-			int numClasses = 0;
-			int totalCredits = 0;
-			int oldGPA = 0;
-			int studentID = 0;
+
 			ResultSet rs2 = null;
+			/*
 			// loop for retrieving and editing info for each student
 			while(rs.next()) {
 				// select id of this student
@@ -66,18 +58,25 @@ public class Students {
 					if(rs2.getInt("StudentID") == studentID) {
 						numClasses++;
 						
-					}				
-				}
-				System.out.println("Number of Classes: " + numClasses);
-				System.out.println("old GPA: " + oldGPA);
-				System.out.println("Credit Hours: " + oldCredits);
-				numClasses = 0;
-				}
+					}}				
+				}*/
+
+
+				
 			}
-		catch(Exception e1) {
+		catch(Exception e) {
 			System.out.println("Could not select!");
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
+    	
+    }
+	
+	
+	public static void main(String args[]){
+		Students project2 = new Students();
+		project2.viewDB();
+		project2.getStudentInfo();
+		
 	}
 
 }
