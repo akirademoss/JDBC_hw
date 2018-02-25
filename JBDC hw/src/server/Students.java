@@ -36,16 +36,23 @@ public class Students {
     private void getStudentInfo(){
     	Statement stmnt;
     	ResultSet rs = null;
+    	int studentID;
+    	String grade;
 		try {
 			stmnt =  con.createStatement();
-			rs = stmnt.executeQuery("select e.Student, e.CourseCode from Enrollment e");
+			rs = stmnt.executeQuery("select e.StudentID, e.Grade from Enrollment e");
 		
-			System.out.println(rs); // testing only, remove when done with project
+		
 
-			ResultSet rs2 = null;
+			while(rs.next()) {
+				studentID = rs.getInt("StudentID");
+				grade = rs.getString("Grade");
+				System.out.println("" + studentID + grade); // testing only, remove when done with project
+			}
+			
 			/*
 			// loop for retrieving and editing info for each student
-			while(rs.next()) {
+			
 				// select id of this student
 				studentID = rs.getInt("StudentID");
 				oldCredits = rs.getInt("CreditHours");
@@ -58,7 +65,7 @@ public class Students {
 					if(rs2.getInt("StudentID") == studentID) {
 						numClasses++;
 						
-					}}				
+					}				
 				}*/
 
 
