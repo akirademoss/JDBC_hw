@@ -1,0 +1,85 @@
+package server;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.*;
+
+public class Students {
+	//Database name: db363demoss Username: dbu363demoss Password: CziY1366
+	
+    private String dbUrl = "jdbc:mysql://localhost:3306/university";
+    private String user = "root";
+    private String password = "2591gHsS";
+    private static Connection con;
+	
+    private void viewDB() {
+        try {
+            // Load the driver (registers itself)
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (Exception E) {
+            System.err.println("Unable to load driver.");
+            E.printStackTrace();
+        }
+
+        try {
+            // Connect to the database
+            con = DriverManager.getConnection(dbUrl, user, password);
+            System.out.println("*** Connected to the database ***");
+
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+    }
+    
+    private void getStudentInfo(){
+    	Statement stmnt;
+    	ResultSet rs = null;
+		try {
+			stmnt =  con.createStatement();
+			rs = stmnt.executeQuery("select e.StudentID, e.Grade from Enrollment e");
+		
+		
+
+			while(rs.next()) {
+				System.out.println(rs); // testing only, remove when done with project
+			}
+			
+			/*
+			// loop for retrieving and editing info for each student
+			
+				// select id of this student
+				studentID = rs.getInt("StudentID");
+				oldCredits = rs.getInt("CreditHours");
+				oldGPA = rs.getInt("GPA");
+				System.out.println(studentID); // testing only as well
+				// find matching enrollment records 
+				rs2 = statement2.executeQuery("select * from Enrollment e where e.StudentID = "); 
+				while(rs2.next()) {
+					//count classes the student is in
+					if(rs2.getInt("StudentID") == studentID) {
+						numClasses++;
+						
+					}				
+				}*/
+
+
+				
+			}
+		catch(Exception e) {
+			System.out.println("Could not select!");
+			e.printStackTrace();
+		}
+    	
+    }
+	
+	
+	public static void main(String args[]){
+		Students project2 = new Students();
+		project2.viewDB();
+		project2.getStudentInfo();
+		
+	}
+
+}
