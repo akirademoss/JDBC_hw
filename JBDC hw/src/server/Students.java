@@ -13,6 +13,7 @@ public class Students {
     private String password = "2591gHsS";
     private static Connection con;
     private ResultSet rs = null;
+	Statement stmnt;
 	
     private void viewDB() {
         try {
@@ -36,7 +37,6 @@ public class Students {
     }
     
     private void getStudentInfo(){
-    	Statement stmnt;
     	int studentID;
     	String grade;
     	double gpa = 0.0;
@@ -46,8 +46,12 @@ public class Students {
 			
 			//Gpa = (CreditHours*GPA + 3*(GPA in course))/(CreditHours + 3) --CreditHours + 3 is the new total credit ours
 			//Updates Gpa for specific student id
-			PreparedStatement stmt1 = con.prepareStatement("update Student" + " " + "set GPA = (CreditHours*GPA + 3*?)/(CreditHours + 3)" + " " + "where StudentID = ?");
-			PreparedStatement stmt2 = con.prepareStatement("update Student" + " " + "set CreditHours = CreditHours +3" + " " + "where StudentID = ?");
+			PreparedStatement stmt1 = con.prepareStatement("update Student" + " " 
+															+ "set GPA = (CreditHours*GPA + 3*?)/(CreditHours + 3)" 
+															+ " " + "where StudentID = ?");
+			
+			PreparedStatement stmt2 = con.prepareStatement("update Student" + " " + "set CreditHours = CreditHours +3" 
+															+ " " + "where StudentID = ?");
 		
 			while(rs.next()) {
 				studentID = rs.getInt("StudentID");
@@ -169,6 +173,8 @@ public class Students {
 		project2.viewDB();
 		//Part A
 		project2.getStudentInfo();
+		//Part B
+		project2.getTopSeniors();
 		
 	}
 
