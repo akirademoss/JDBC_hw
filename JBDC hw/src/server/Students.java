@@ -10,7 +10,7 @@ public class Students {
 	
     private String dbUrl = "jdbc:mysql://localhost:3306/university";
     private String user = "root";
-    private String password = "2591gHsS";
+    private String password = "password";
     private static Connection con;
     private ResultSet rs = null;
 	
