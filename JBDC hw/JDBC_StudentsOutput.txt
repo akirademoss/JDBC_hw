@@ -1,5 +1,5 @@
-Student: Tom Moody; Mentor: Richard Ellison; GPA: 3.88
-Student: Jim Slater; Mentor: Min Tuyet; GPA: 3.67
-Student: Omar Shahnawaz; Mentor: Min Tuyet; GPA: 3.57
-Student: Eric Dennis; Mentor: Richard Ellison; GPA: 3.56
-Student: Stumpf Andrews; Mentor: Graeme Dilly; GPA: 3.51
+Student Name: Alan Border, GPA: 3.96. Mentor: Ricky Ponting
+Student Name: Brian Stumpf, GPA: 3.88. Mentor: Richard Ellison
+Student Name: Martin Crowe, GPA: 3.88. Mentor: Chad Moore
+Student Name: John Freeman, GPA: 3.87. Mentor: Graeme Dilly
+Student Name: Daniel Hayden, GPA: 3.83. Mentor: Graeme Dilly

@@ -1,6 +1,6 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
-configDescList=org.eclipse.launchbar.core.descriptorType.default\:Students
+configDescList=org.eclipse.launchbar.core.descriptorType.default\:JDBC_students,org.eclipse.launchbar.core.descriptorType.default\:Students,org.eclipse.launchbar.core.descriptorType.default\:JDBC_students_for_testing
 eclipse.preferences.version=1
 org.eclipse.launchbar.core.descriptorType.default\:Students/activeLaunchMode=run
 org.eclipse.launchbar.core.descriptorType.default\:Students/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local

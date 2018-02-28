@@ -10,7 +10,7 @@ public class Students {
 	
     private String dbUrl = "jdbc:mysql://localhost:3306/university";
     private String user = "root";
-    private String password = "password";
+    private String password = "2591gHsS";
     private static Connection con;
     private ResultSet rs = null;
 	Statement stmnt;
@@ -58,37 +58,40 @@ public class Students {
 				grade = rs.getString("Grade");
 				grade = grade.trim();
 				
-				if(grade == "A"){
+				if(grade.equals("A")){
 					gpa = 4.00;
 				}	
-				else if(grade == "A-"){
+				if(grade.equals("A-")){
 					gpa = 3.67;
 				}
-				else if(grade == "B+"){
+				if(grade.equals("B+")){
 					gpa = 3.33;
 				}
-				else if(grade == "B"){
+				if(grade.equals("B")){
 					gpa = 3.00;
 				}	
-				else if(grade == "B-"){
+				if(grade.equals("B-")){
 					gpa = 2.67;
 				}
-				else if(grade == "C+"){
+				if(grade.equals("C+")){
 					gpa = 2.33;
 				}
-				else if(grade == "C"){
+				if(grade.equals("C")){
 					gpa = 2.00;
 				}
-				else if(grade == "C-"){
+				if(grade.equals("C-")){
 					gpa = 1.67;
 				}
-				else if(grade == "D+"){
+				if(grade.equals("D+")){
 					gpa = 1.33;
 				}
-				else if(grade == "D"){
+				if(grade.equals("D")){
 					gpa = 1.00;
 				}
-				else if(grade == "F"){
+				if(grade.equals("F")){
+					gpa = 0;
+				}
+				else{
 					gpa = 0;
 				}
 				
