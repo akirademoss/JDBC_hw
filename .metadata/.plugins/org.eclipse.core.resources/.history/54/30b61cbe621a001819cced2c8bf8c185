@@ -1,0 +1,41 @@
+package server;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.*;
+
+public class Students {
+	
+    private String dbUrl = "jdbc:msql://localhost:3306/university";
+    private String user = "root";
+    private String password = "2591gHsS";
+    private Connection con;
+	
+    private void viewDB() {
+        try {
+            // Load the driver (registers itself)
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (Exception E) {
+            System.err.println("Unable to load driver.");
+            E.printStackTrace();
+        }
+
+        try {
+            // Connect to the database
+            con = DriverManager.getConnection(dbUrl, user, password);
+            System.out.println("*** Connected to the database ***");
+
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+    }
+	
+	
+	public static void main(String args[]){
+		Students project2 = new Students();
+		project2.viewDB();
+	}
+
+}

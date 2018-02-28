@@ -1,0 +1,5 @@
+Student: Alan Border; Mentor: Ricky Ponting; GPA: 3.96
+Student: Brian Stumpf; Mentor: Richard Ellison; GPA: 3.88
+Student: Martin Crowe; Mentor: Chad Moore; GPA: 3.88
+Student: John Freeman; Mentor: Graeme Dilly; GPA: 3.87
+Student: Daniel Hayden; Mentor: Graeme Dilly; GPA: 3.83
