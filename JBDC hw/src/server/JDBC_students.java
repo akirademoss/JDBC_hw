@@ -1,3 +1,7 @@
+/**
+ *@author Akira DeMoss, Joe Wallace
+ */
+
 package server;
 
 import java.io.IOException;
@@ -5,7 +9,7 @@ import java.io.PrintWriter;
 import java.sql.*;
 
 /**
- *
+ *test for JBDC_students
  */
 public class JDBC_students {
 
@@ -15,7 +19,7 @@ public class JDBC_students {
     private String password = "2591gHsS";
     private static Connection conn1;
     private ResultSet rs = null;
-	Statement stmnt;
+    Statement stmnt;
 
 
     /**
@@ -56,127 +60,128 @@ public class JDBC_students {
             double gpa = 0;
             double nGPA = 0;
             double courseGrade = 0.0;
+            int cHupdated = 0;
             String classification = "";
             String grade = "";
             
-        	//A ResultSet object maintains a cursor pointing to its current row of data. 
-        	//Initially the cursor is positioned before the first row. The next method
-        	//moves the cursor to the next row, and because it returns false when there 
-        	//are no more rows in the ResultSet object, it can be used in a while loop to 
-        	//iterate through the result set.
+
             stmnt = conn1.createStatement();
 
 
             //THE SQL statement
-            rs = stmnt.executeQuery(
-            		"SELECT t1.StudentID, t2.Classification, t2.CreditHours, t2.GPA,t1.Grade FROM" 
-                    		+ " " +
-                            "(SELECT  *" + " " +
-                            "FROM Enrollment e) AS t1" + " " +
-                            "\n" +
-                            "LEFT JOIN" + " " +
-                            "\n" +
-                            "  (SELECT *" + " " +
-                            "  FROM Student s) AS t2" + " " +
-                            "  ON t1.StudentID = t2.StudentID" + " " +
-                            "ORDER BY t1.StudentID;");
+            rs = stmnt.executeQuery("SELECT s.StudentID, GPA, CreditHours, CourseCode, Grade FROM Student s INNER JOIN Enrollment e ON s.StudentID = e.StudentID ORDER BY s.StudentID;");
             
+            //A ResultSet object maintains a cursor pointing to its current row of data. 
+            //Initially the cursor is positioned before the first row. The next method
+            //moves the cursor to the next row, and because it returns false when there 
+            //are no more rows in the ResultSet object, it can be used in a while loop to 
+            //iterate through the result set.
             //rs.next() will process each line
             while(rs.next()){
-            	
                 
+                nGPA = Math.round(nGPA*100)/100.0;
                 curStudentID = rs.getInt(1);
 
                 //enters loop if encounters next student in the list next student is a new student
                 if(curStudentID != nextStudentID && nextStudentID != 0){
-                	
+                    //final update to credit hours
+                    creditHours += 3;
+                    
                     //can update creditHours based on classification now
                     if(creditHours > 89){
-                    	classification = "Senior";
+                        classification = "Senior";
                     }else if(creditHours > 59 && creditHours < 90){
-                    	classification = "Junior";
+                        classification = "Junior";
                     }else if(creditHours > 29 && creditHours < 60){
-                    	classification = "Sophomore";
+                        classification = "Sophomore";
                     }else{
-                    	classification = "Freshman";
+                        classification = "Freshman";
                     }
                     //update
                     PreparedStatement ps = conn1.prepareStatement("UPDATE Student SET Classification = ?, GPA = ?, CreditHours = ? WHERE StudentID = ?");
                     ps.setString(1,classification);
                     ps.setDouble(2, nGPA);
                     ps.setInt(3,creditHours);
-                    ps.setInt(4,nextStudentID);
+                    ps.setInt(4,curStudentID);
                     ps.executeUpdate();
                     ps.close();
-                    
-                    System.out.println("New GPA: " + nGPA);
-                    System.out.println("\n\nNew Student");
-                    creditHours = 0;
+                    //debug
+                    //System.out.println("New Credit Hours: " + creditHours);
+                    //System.out.println("New GPA: " + nGPA);
+                    //System.out.println("\n\nNew Student");
+                    cHupdated = 0;
                 }
 
                 //If one the same student still, get the data
-                creditHours = rs.getInt(3);
-                gpa = rs.getFloat(4);
-                grade = rs.getString(5);
-                classification = rs.getString(2);
-
-                
-        		if(grade == "A"){
-        			courseGrade = 4.00;
-        		}	
-        		else if(grade == "A-"){
-        			courseGrade = 3.67;
-        		}
-        		else if(grade == "B+"){
-        			courseGrade = 3.33;
-        		}
-        		else if(grade == "B"){
-        			courseGrade = 3.00;
-        		}	
-        		else if(grade == "B-"){
-        			courseGrade = 2.67;
-        		}
-        		else if(grade == "C+"){
-        			courseGrade = 2.33;
-        		}
-        		else if(grade == "C"){
-        			courseGrade = 2.00;
-        		}
-        		else if(grade == "C-"){
-        			courseGrade = 1.67;
-        		}
-        		else if(grade == "D+"){
-        			courseGrade = 1.33;
-        		}
-        		else if(grade == "D"){
-        			courseGrade = 1.00;
-        		}
-        		else if(grade == "F"){
-        			courseGrade = 0;
-        		}
-        		System.out.println(rs.getInt(1));
-                //calculate new GPA
-                nGPA = (((gpa * creditHours - 3) + (3 * courseGrade)) / (creditHours));
-                System.out.println("GPA " + gpa);
-                System.out.println("Grade: " + grade);
-
-                //peek next student
-                if(rs.next()) {
-                nextStudentID = rs.getInt(1);
+                creditHours = rs.getInt(3) + cHupdated;
+                //if first instance of a studentID, need to get the initial gpa
+                if(cHupdated == 0){
+                gpa = rs.getDouble(2);
                 }
+                grade = rs.getString(5).trim();
 
-                //If the same one, we only need gpa from next class.
+                //string comparison
+                switch(grade){
+                case "A":
+                    courseGrade = 4.00;
+                    break;
+                case "A-":
+                    courseGrade = 3.66;
+                    break;
+                case "B+":
+                    courseGrade = 3.33;
+                    break;
+                case "B":
+                    courseGrade = 3.00;
+                    break;
+                case "B-":
+                    courseGrade = 2.66;
+                    break;
+                case "C+":
+                    courseGrade = 2.33;
+                    break;
+                case "C":
+                    courseGrade = 2.00;
+                    break;
+                case "C-":
+                    courseGrade = 1.66;
+                    break;
+                case "D+":
+                    courseGrade = 1.33;
+                    break;
+                case "D":
+                    courseGrade = 1.00;
+                    break;
+                default:
+                    System.out.println("Invalid Grade");
+                }
+                
+                System.out.println(rs.getInt(1));
+                //calculate new GPA
+                nGPA = (((gpa * creditHours-3) + (3 * courseGrade)) / (creditHours));
+                //debug
+                //System.out.println("Credit Hours: " + creditHours);
+                //System.out.println("Initial GPA: " + gpa);
+                //System.out.println("Current Grade: " + courseGrade);
+
+                //peek next student                
+                nextStudentID = rs.getInt(1);
+                
+                //If the same student, we only need gpa from single course.  
                 if(nextStudentID == curStudentID){
 
-                    nGPA = (((gpa * creditHours) + (3 * courseGrade)) / (creditHours + 3));
-                    creditHours += 3;
+                    gpa = (((gpa * creditHours) + (3 * courseGrade)) / (creditHours +3));
+                    cHupdated += 3;
+                    nGPA = gpa;
                 }
+                //System.out.println("Update of GPA: " + nGPA);
             }
 
-            //stmnt.close();
+            
             rs.close();
 
         } catch (SQLException e) {
+            //debug
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
@@ -236,7 +241,7 @@ public class JDBC_students {
      * Main.
      */
     public static void main(String[] args) throws Exception {
-    	JDBC_students project3 = new JDBC_students();
+        JDBC_students project3 = new JDBC_students();
 
         project3.openDB();
         //Part A

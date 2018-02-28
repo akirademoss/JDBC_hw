@@ -4,7 +4,6 @@
 
 package server;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -12,7 +11,7 @@ import java.sql.*;
 /**
  *test for JBDC_students
  */
-public class JDBC_students_for_testing {
+public class JDBC_students {
 
    
     private String dbUrl = "jdbc:mysql://localhost:3306/university";
@@ -20,7 +19,7 @@ public class JDBC_students_for_testing {
     private String password = "2591gHsS";
     private static Connection conn1;
     private ResultSet rs = null;
-	Statement stmnt;
+    Statement stmnt;
 
 
     /**
@@ -72,31 +71,31 @@ public class JDBC_students_for_testing {
             //THE SQL statement
             rs = stmnt.executeQuery("SELECT s.StudentID, GPA, CreditHours, CourseCode, Grade FROM Student s INNER JOIN Enrollment e ON s.StudentID = e.StudentID ORDER BY s.StudentID;");
             
-        	//A ResultSet object maintains a cursor pointing to its current row of data. 
-        	//Initially the cursor is positioned before the first row. The next method
-        	//moves the cursor to the next row, and because it returns false when there 
-        	//are no more rows in the ResultSet object, it can be used in a while loop to 
-        	//iterate through the result set.
+            //A ResultSet object maintains a cursor pointing to its current row of data. 
+            //Initially the cursor is positioned before the first row. The next method
+            //moves the cursor to the next row, and because it returns false when there 
+            //are no more rows in the ResultSet object, it can be used in a while loop to 
+            //iterate through the result set.
             //rs.next() will process each line
             while(rs.next()){
-            	
-            	nGPA = Math.round(nGPA*100)/100.0;
+                
+                nGPA = Math.round(nGPA*100)/100.0;
                 curStudentID = rs.getInt(1);
 
                 //enters loop if encounters next student in the list next student is a new student
                 if(curStudentID != nextStudentID && nextStudentID != 0){
-                	//final update to credit hours
-                	creditHours += 3;
-                	
+                    //final update to credit hours
+                    creditHours += 3;
+                    
                     //can update creditHours based on classification now
                     if(creditHours > 89){
-                    	classification = "Senior";
+                        classification = "Senior";
                     }else if(creditHours > 59 && creditHours < 90){
-                    	classification = "Junior";
+                        classification = "Junior";
                     }else if(creditHours > 29 && creditHours < 60){
-                    	classification = "Sophomore";
+                        classification = "Sophomore";
                     }else{
-                    	classification = "Freshman";
+                        classification = "Freshman";
                     }
                     //update
                     PreparedStatement ps = conn1.prepareStatement("UPDATE Student SET Classification = ?, GPA = ?, CreditHours = ? WHERE StudentID = ?");
@@ -106,9 +105,10 @@ public class JDBC_students_for_testing {
                     ps.setInt(4,curStudentID);
                     ps.executeUpdate();
                     ps.close();
-                    System.out.println("New Credit Hours: " + creditHours);
-                    System.out.println("New GPA: " + nGPA);
-                    System.out.println("\n\nNew Student");
+                    //debug
+                    //System.out.println("New Credit Hours: " + creditHours);
+                    //System.out.println("New GPA: " + nGPA);
+                    //System.out.println("\n\nNew Student");
                     cHupdated = 0;
                 }
 
@@ -122,46 +122,47 @@ public class JDBC_students_for_testing {
 
                 //string comparison
                 switch(grade){
-				case "A":
-					courseGrade = 4.00;
-					break;
-				case "A-":
-					courseGrade = 3.66;
-					break;
-				case "B+":
-					courseGrade = 3.33;
-					break;
-				case "B":
-					courseGrade = 3.00;
-					break;
-				case "B-":
-					courseGrade = 2.66;
-					break;
-				case "C+":
-					courseGrade = 2.33;
-					break;
-				case "C":
-					courseGrade = 2.00;
-					break;
-				case "C-":
-					courseGrade = 1.66;
-					break;
-				case "D+":
-					courseGrade = 1.33;
-					break;
-				case "D":
-					courseGrade = 1.00;
-					break;
-				default:
-					System.out.println("Invalid Grade");
-				}
-				
-        		System.out.println(rs.getInt(1));
+                case "A":
+                    courseGrade = 4.00;
+                    break;
+                case "A-":
+                    courseGrade = 3.66;
+                    break;
+                case "B+":
+                    courseGrade = 3.33;
+                    break;
+                case "B":
+                    courseGrade = 3.00;
+                    break;
+                case "B-":
+                    courseGrade = 2.66;
+                    break;
+                case "C+":
+                    courseGrade = 2.33;
+                    break;
+                case "C":
+                    courseGrade = 2.00;
+                    break;
+                case "C-":
+                    courseGrade = 1.66;
+                    break;
+                case "D+":
+                    courseGrade = 1.33;
+                    break;
+                case "D":
+                    courseGrade = 1.00;
+                    break;
+                default:
+                    System.out.println("Invalid Grade");
+                }
+                
+                System.out.println(rs.getInt(1));
                 //calculate new GPA
                 nGPA = (((gpa * creditHours-3) + (3 * courseGrade)) / (creditHours));
-                System.out.println("Credit Hours: " + creditHours);
-                System.out.println("Initial GPA: " + gpa);
-                System.out.println("Current Grade: " + courseGrade);
+                //debug
+                //System.out.println("Credit Hours: " + creditHours);
+                //System.out.println("Initial GPA: " + gpa);
+                //System.out.println("Current Grade: " + courseGrade);
 
                 //peek next student                
                 nextStudentID = rs.getInt(1);
@@ -176,13 +177,14 @@ public class JDBC_students_for_testing {
                 System.out.println("Update of GPA: " + nGPA);
             }
 
-            //stmnt.close();
+            
             rs.close();
 
         } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("VendorError: " + e.getErrorCode());
+            //debug
+            //System.out.println("SQLException: " + e.getMessage());
+            //System.out.println("SQLState: " + e.getSQLState());
+            //System.out.println("VendorError: " + e.getErrorCode());
         }
     }
 
@@ -192,7 +194,6 @@ public class JDBC_students_for_testing {
      */
     private void topFiveStudents(){
         try{
-        	/*
 
             //SQL
             rs = stmnt.executeQuery(
@@ -223,40 +224,16 @@ public class JDBC_students_for_testing {
 
             }catch (IOException e){
 
-            }*/
-        	
- 			File file = new File("JDBC_StudentsOutput.txt");
- 			PrintWriter writer = new PrintWriter(file);
- 			System.out.println("Part B- Top 5(ish) Seniors: ");
- 			int count = 0;
- 			double gpa = 0;
- 		
- 			// retrieves the GPA and name of seniors, sorted by said GPA
- 			rs = stmnt.executeQuery("select s.GPA, p1.Name, p2.Name " 
- 										+ "from Student s, Person p1, Person p2 " 
- 										+ "where s.Classification = 'Senior'  and p1.ID = s.StudentID and p2.ID = s.MentorID " 
- 										+"order by s.GPA desc");
- 			//print top 5 seniors
- 			while(rs.next() &&  count < 5) {
- 				count++;
- 				gpa = rs.getDouble(1);
- 				writer.println("Student: " + rs.getString(2)+ "; Mentor: " + rs.getString(3)+ "; GPA: " + Math.round(gpa*100)/100.0);			 
- 			}
- 	
- 			//finds and prints 
- 			while(rs.next() ) {
- 				if(gpa == (rs.getDouble(1))){
- 					writer.println("Student: " + rs.getString(2)+ "; Mentor: " + rs.getString(3)+ "; GPA: " + Math.round(gpa*100)/100.0);	
- 				}
- 			}
+            }
 
             writer.close();
             rs.close();
        
 
-        } catch (Exception e) {
-            System.out.println("Error getting file");
-
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
         }
     }
     
@@ -264,7 +241,7 @@ public class JDBC_students_for_testing {
      * Main.
      */
     public static void main(String[] args) throws Exception {
-    	JDBC_students_for_testing project3 = new JDBC_students_for_testing();
+        JDBC_students project3 = new JDBC_students();
 
         project3.openDB();
         //Part A

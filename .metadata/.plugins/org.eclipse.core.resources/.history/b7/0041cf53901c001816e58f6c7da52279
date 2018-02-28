@@ -4,7 +4,6 @@
 
 package server;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -224,9 +223,8 @@ public class JDBC_students_for_testing {
             }catch (IOException e){
 
             }*/
-        	
- 			File file = new File("JDBC_StudentsOutput.txt");
- 			PrintWriter writer = new PrintWriter(file);
+        	PrintWriter writer = null;
+ 			writer = new PrintWriter("JDBC_StudentsOutput.txt","UTF-8");
  			System.out.println("Part B- Top 5(ish) Seniors: ");
  			int count = 0;
  			double gpa = 0;
@@ -234,8 +232,9 @@ public class JDBC_students_for_testing {
  			// retrieves the GPA and name of seniors, sorted by said GPA
  			rs = stmnt.executeQuery("select s.GPA, p1.Name, p2.Name " 
  										+ "from Student s, Person p1, Person p2 " 
- 										+ "where s.Classification = 'Senior'  and p1.ID = s.StudentID and p2.ID = s.MentorID " 
+ 										+ "where s.Classification = 'Senior'  and p1.ID = s.StudentID and p2.ID = s.MentorID "  			
  										+"order by s.GPA desc");
+ 			try{
  			//print top 5 seniors
  			while(rs.next() &&  count < 5) {
  				count++;
@@ -254,9 +253,10 @@ public class JDBC_students_for_testing {
             rs.close();
        
 
-        } catch (Exception e) {
-            System.out.println("Error getting file");
-
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
         }
     }
     
