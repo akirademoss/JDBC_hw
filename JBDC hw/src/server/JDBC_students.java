@@ -16,7 +16,7 @@ public class JDBC_students {
    
     private String dbUrl = "jdbc:mysql://localhost:3306/university";
     private String user = "root";
-    private String password = "2591gHsS";
+    private String password = "********";
     private static Connection conn1;
     private ResultSet rs = null;
     Statement stmnt;
